@@ -26,9 +26,9 @@ flowchart TD
 
     J --> K[Terminal output\ncoloured + structured]
     J --> L[_write_json_log\nlogs/crash_<ts>.json]
-    J --> M[_write_html_report\nlogs/crash_<ts>.html]
+    J --> L[_write_json_log\nlogs/crash_<ts>.json]
 
-    K & L & M --> N[_run_cleanup_hooks]
+    K & L --> N[_run_cleanup_hooks]
     N --> O{Ursina running?}
     O -- Yes --> P[application.quit]
     O -- No  --> Q
@@ -48,7 +48,6 @@ src/
     _demo_scenarios/      ← isolated scripts for the demo suite
 logs/
   crash_<timestamp>.json  ← machine-readable structured log
-  crash_<timestamp>.html  ← human-readable diagnostic report
 ```
 
 ---
@@ -88,9 +87,7 @@ Captures at crash time:
 
 **JSON log** — structured, machine-readable. Useful for automated parsing or future log-viewer tooling.
 
-**HTML report** — dark-themed, human-readable. Opens directly in a browser. Colour-coded by severity. Intended to be the primary developer diagnostic artefact.
-
-Both logs are written to disk before cleanup hooks are invoked. This guarantees that crash data is persisted even if a cleanup hook itself raises or hangs.
+The log is written to disk before cleanup hooks are invoked. This guarantees that crash data is persisted even if a cleanup hook itself raises or hangs.
 
 ### 6. Cleanup Hooks (`register_cleanup_hook`)
 
